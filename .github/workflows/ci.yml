@@ -1,0 +1,40 @@
+name: CI
+
+on: 
+  push:
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: install poetry
+        uses: abatilo/actions-poetry@v3
+        with:
+          poetry-version: "1.8.2"
+
+      - name: install dependencies
+        run: poetry install --no-interaction
+
+      - name: lint with ruff
+        run: poetry run ruff .
+
+      - name: check formatting with black
+        run: poetry run black --check .
+
+      - name: run tests & coverage
+        run: make test
+
+      - name: upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: htmlcov/
