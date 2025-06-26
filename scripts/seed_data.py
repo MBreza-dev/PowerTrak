@@ -14,9 +14,7 @@ def create_fake_customers(n: int = 10) -> list[Customer]:
     """Generate customers with names and ZIP codes."""
     return [
         Customer(
-            name=fake.name(),
-            zip_code=fake.zipcode(),
-            created_at=datetime.utcnow()
+            name=fake.name(), zip_code=fake.zipcode(), created_at=datetime.utcnow()
         )
         for _ in range(n)
     ]
@@ -29,7 +27,7 @@ def create_fake_equipment(customers: list[Customer], n: int = 10) -> list[Equipm
             name=fake.word().capitalize() + " Machine",
             serial_number=fake.unique.bothify(text="SN-####-???"),
             description=fake.sentence(nb_words=6),
-            owner_id=fake.random_element(customers).id
+            owner_id=fake.random_element(customers).id,
         )
         for _ in range(n)
     ]
@@ -44,7 +42,7 @@ def create_fake_jobs(equipment_list: list[Equipment], n: int = 15) -> list[Job]:
             description=fake.text(max_nb_chars=120),
             scheduled_at=fake.date_time_this_year(),
             equipment_id=eq.id,
-            created_at=datetime.utcnow()
+            created_at=datetime.utcnow(),
         )
         # 40% chance to mark as complete
         if fake.boolean(chance_of_getting_true=40):
